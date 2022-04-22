@@ -27,7 +27,7 @@ Combining TSENet and TSDNet, we can finish our Tim-TSENet.
 We will re-orgnize our Tim-TSENet code to be a unify framework. Our current version is separated.
 
 #### Citation
-If our code can give you some help, please cite our papar and stars our code.
+If our code can give you some help, please cite our papar and stars our code.<br>
 @article{wang2022improving,
   title={Improving Target Sound Extraction with Timestamp Information},
   author={Wang, Helin and Yang, Dongchao and Weng, Chao and Yu, Jianwei and Zou, Yuexian},
