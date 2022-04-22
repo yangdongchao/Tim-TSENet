@@ -1,0 +1,106 @@
+#### general settings
+name: TSDNet_audio_2gru
+use_tb_logger: true
+num_spks: 1
+one_hot: 0
+focal_loss: false
+label_path: /apdcephfs/share_1316500/donchaoyang/tsss/TSDNet/discard/strong_label_fsd2018_val_new.tsv # must be noticed
+save_tsv_path: /apdcephfs/share_1316500/donchaoyang/tsss/TSD_exp
+model_name: TSDNet # must be 
+use_frame: True
+only_ref: True # if false: using tse.wav
+sim: false
+reg: false
+two: false
+#### datasets
+datasets:
+  train:
+    dataroot_mix: /apdcephfs/share_1316500/donchaoyang/tsss/tsss_data/fsd_2018/scps/tr_mix.scp
+    dataroot_targets: [ /apdcephfs/share_1316500/donchaoyang/tsss/tsss_data/fsd_2018/scps/tr_s1.scp, /apdcephfs/share_1316500/donchaoyang/tsss/tsss_data/fsd_2018/scps/tr_re.scp, /apdcephfs/share_1316500/donchaoyang/tsss/tsss_data/fsd_2018/scps/tr_inf.scp ]
+
+  test:
+    dataroot_mix: /apdcephfs/share_1316500/donchaoyang/tsss/tsss_data/fsd_2018/scps/tt_mix.scp
+    dataroot_targets: [ /apdcephfs/share_1316500/donchaoyang/tsss/tsss_data/fsd_2018/scps/tt_s1.scp, /apdcephfs/share_1316500/donchaoyang/tsss/tsss_data/fsd_2018/scps/tt_re.scp, /apdcephfs/share_1316500/donchaoyang/tsss/tsss_data/fsd_2018/scps/tt_inf.scp ]
+
+  val:
+    dataroot_mix: /apdcephfs/share_1316500/donchaoyang/tsss/tsss_data/fsd_2018/scps/val_mix.scp
+    dataroot_targets: [ /apdcephfs/share_1316500/donchaoyang/tsss/tsss_data/fsd_2018/scps/val_s1.scp, /apdcephfs/share_1316500/donchaoyang/tsss/tsss_data/fsd_2018/scps/val_re.scp, /apdcephfs/share_1316500/donchaoyang/tsss/tsss_data/fsd_2018/scps/val_inf.scp ]
+
+
+  test_offset:
+    dataroot_mix: /apdcephfs/private_helinwang/tsss/TSENet/scps/tto_mix.scp
+    dataroot_targets: [ /apdcephfs/private_helinwang/tsss/TSENet/scps/tto_s1.scp,/apdcephfs/private_helinwang/tsss/TSENet/scps/tto_re.scp ]
+
+
+  dataloader_setting:
+    shuffle: true
+    num_workers: 10  # per GPU
+    batch_size: 64
+  
+  audio_setting:
+    sample_rate: 16000
+    chunk_size: 160000
+    least_size: 160000
+    audio_length: 10
+    class_num: 41   
+    nFrameLen: 512
+    nFrameShift: 256
+    nFFT: 512    
+
+#### network structures
+Conv_Tasnet:
+  N: 512
+  B: 256
+  H: 512
+  P: 3
+  X: 8
+  R: 3
+  norm: gln
+  num_spks: 1
+  causal: false
+  class_num: 41
+  fusion: concat
+  usingEmb: [True,True,True]
+  usingTsd: [False,False,False]
+  CNN10_settings: [16000,1024,320,64,50,8000,527,512,128]
+  fixCNN10: false
+  fixTSENet: true
+  pretrainedCNN10: /apdcephfs/private_donchaoyang/tsss/Dual-Path-RNN-Pytorch2/model/Cnn10_mAP=0.380.pth
+  pretrainedTSDNet: /apdcephfs/private_donchaoyang/tsss/Dual-Path-RNN-Pytorch18/checkpoint/Conv_Tasnet/best.pt
+  threshold: 0.4
+
+#### training settings: learning rate scheme, loss
+train:
+  epoch: 60
+  early_stop: 8
+  path: /apdcephfs/share_1316500/donchaoyang/tsss/TSD_exp/checkpoint_fsd2018_audio
+  gpuid: [0]
+
+#### Optimizer settings
+optim:
+  name: Adam   ### Adam, RMSprop, SGD
+  lr: !!float 1e-3
+  momentum: 0.9
+  weight_decay: !!float 1e-5
+  clip_norm: 200
+
+#### scheduler settings
+scheduler:
+  min_lr: !!float 1e-8
+  patience: 2
+  factor: 0.5
+
+#### Resume training settings
+resume:
+  state: false
+  path: /apdcephfs/share_1316500/donchaoyang/tsss/TSD_exp/checkpoint_fsd2018_audio
+
+
+#### logger
+logger:
+  name: DPCL
+  experimental_description: In this experiment, we test TSD fsd2018
+  path: /apdcephfs/share_1316500/donchaoyang/tsss/TSD_exp/checkpoint_fsd2018_audio
+  screen: true
+  tofile: true
+  print_freq: 100

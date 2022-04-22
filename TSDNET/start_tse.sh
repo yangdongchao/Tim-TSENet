@@ -1,0 +1,1 @@
+python3 train_Tasnet_tse.py --opt config/Conv_Tasnet/train.yml

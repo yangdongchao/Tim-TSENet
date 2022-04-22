@@ -1,0 +1,83 @@
+#### general settings
+name: Conv_Tasnet
+use_tb_logger: true
+num_spks: 2
+#### datasets
+datasets:
+  train:
+    dataroot_mix: /apdcephfs/private_helinwang/tsss/Dual-Path-RNN-Pytorch/scps_debug/tr_mix.scp
+    dataroot_targets: [/apdcephfs/private_helinwang/tsss/Dual-Path-RNN-Pytorch/scps_debug/tr_s1.scp,/apdcephfs/private_helinwang/tsss/Dual-Path-RNN-Pytorch/scps_debug/tr_s2.scp,/apdcephfs/private_helinwang/tsss/Dual-Path-RNN-Pytorch/scps_debug/tr_re.scp]
+
+  test:
+    dataroot_mix: /apdcephfs/private_helinwang/tsss/Dual-Path-RNN-Pytorch/scps_debug/tt_mix.scp
+    dataroot_targets: [ /apdcephfs/private_helinwang/tsss/Dual-Path-RNN-Pytorch/scps_debug/tt_s1.scp,/apdcephfs/private_helinwang/tsss/Dual-Path-RNN-Pytorch/scps_debug/tt_s2.scp,/apdcephfs/private_helinwang/tsss/Dual-Path-RNN-Pytorch/scps_debug/tt_re.scp ]
+
+  val:
+    dataroot_mix: /apdcephfs/private_helinwang/tsss/Dual-Path-RNN-Pytorch/scps_debug/val_mix.scp
+    dataroot_targets: [ /apdcephfs/private_helinwang/tsss/Dual-Path-RNN-Pytorch/scps_debug/val_s1.scp,/apdcephfs/private_helinwang/tsss/Dual-Path-RNN-Pytorch/scps_debug/val_s2.scp,/apdcephfs/private_helinwang/tsss/Dual-Path-RNN-Pytorch/scps_debug/val_re.scp ]
+
+
+  test_offset:
+    dataroot_mix: /apdcephfs/private_helinwang/tsss/Dual-Path-RNN-Pytorch/scps_debug/tto_mix.scp
+    dataroot_targets: [ /apdcephfs/private_helinwang/tsss/Dual-Path-RNN-Pytorch/scps_debug/tto_s1.scp,/apdcephfs/private_helinwang/tsss/Dual-Path-RNN-Pytorch/scps_debug/tto_s2.scp,/apdcephfs/private_helinwang/tsss/Dual-Path-RNN-Pytorch/scps_debug/tto_re.scp ]
+
+
+  dataloader_setting:
+    shuffle: true
+    num_workers: 10  # per GPU
+    batch_size: 4
+  
+  audio_setting:
+    sample_rate: 32000
+    chunk_size: 64000
+    least_size: 64000
+    
+
+#### network structures
+Conv_Tasnet:
+  N: 512
+  L: 16
+  B: 128
+  H: 512
+  P: 3
+  X: 8
+  R: 3
+  norm: gln
+  num_spks: 1
+  activate: relu
+  causal: false
+
+#### training settings: learning rate scheme, loss
+train:
+  epoch: 100
+  early_stop: 10
+  path: /apdcephfs/private_helinwang/tsss/Dual-Path-RNN-Pytorch/checkpoint
+  gpuid: [0]
+
+#### Optimizer settings
+optim:
+  name: Adam   ### Adam, RMSprop, SGD
+  lr: !!float 1e-3
+  momentum: 0.9
+  weight_decay: !!float 1e-5
+  clip_norm: 200
+
+#### scheduler settings
+scheduler:
+  min_lr: !!float 1e-8
+  patience: 2
+  factor: 0.5
+
+#### Resume training settings
+resume:
+  state: false
+  path: /apdcephfs/private_helinwang/tsss/Dual-Path-RNN-Pytorch/checkpoint
+
+
+#### logger
+logger:
+  name: DPCL
+  path: /apdcephfs/private_helinwang/tsss/Dual-Path-RNN-Pytorch/checkpoint
+  screen: true
+  tofile: true
+  print_freq: 100
