@@ -1,0 +1,11 @@
+{
+    "Token":"Qcgdgib8DW7xORrhWQ-y5Q",
+    "business_flag": "TEG_AILAB_TRC_CGC_INTERN",
+    "model_local_file_path": "/apdcephfs/private_helinwang/tsss/TSENet/run_test",
+    "GPUName": "P40",
+    "task_flag": "test_TSENet",
+    "host_num": 1,
+    "host_gpu_num": 1,
+    "image_full_name": "mirrors.tencent.com/ailab_sv/g-tlinux2.2-python3.6-cuda10.2-cudnn8.0-pytorch1.6-torchvision0.7-numpy-sacred-scipy-soundfile-kaldi_io-python_speech_features-yaml-torchaudio-libsndfile-scikit_learn-tqdm:latest",
+    "is_elasticity": true
+}

@@ -11,11 +11,11 @@ If you plan to generate samples by yourself, please first download FSD dataset a
 Secondly, please set the true path, and run generate_data_fsd_kaggle2.py and create_scp.py.
 
 #### TSE model
-Folder TSENet includes the code of our baseline model (TSENet), which is based ConvTasNet. you can run it by 
+Folder TSENET includes the code of our baseline model (TSENet), which is based ConvTasNet. you can run it by 
 bash start.sh <br> Furthermore, you can set different parameter on config file.
 
 #### TSD model
-Folder TSDNet includes the code of TSD, which is used to detect the target sound.
+Folder TSDNET includes the code of TSD, which is used to detect the target sound.
 
 #### Tim-TSENet
 Combining TSENet and TSDNet, we can finish our Tim-TSENet.
